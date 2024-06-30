@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
-import User from '../models/User';
-import { ITour } from '../models/Tour';
-import { IUser } from '../models/User';
+import { getUsers } from '../controllers/user.controller';
+import { SignIn, SignUp } from '../controllers/user.controller';
+import { protect } from '../middlewares/users.middleware';
 
 const router = Router();
 /**
@@ -16,6 +16,7 @@ const router = Router();
  * /api/users:
  *   get:
  *     summary: Retrieve all users
+ *     tags: [Users]
  *     responses:
  *       '200':
  *         description: A list of users
@@ -31,22 +32,11 @@ const router = Router();
  *                   email:
  *                     type: string
  */
-router.get('/', async (req: Request, res: Response) => {
-    try {
-        const users = await User.find();
-        res.status(200).json(users);
-    } catch (error) {
-        if (error instanceof Error) {
-            res.status(400).json({ message: error.message });
-        } else {
-            res.status(500).json({ message: 'Internal Server Error' });
-        }
-    }
-});
+router.get('/', protect, getUsers);
 
 /**
  * @swagger
- * /api/users/user:
+ * /api/users/signUp:
  *   post:
  *     summary: Create a new user
  *     tags: [Users]
@@ -58,11 +48,14 @@ router.get('/', async (req: Request, res: Response) => {
  *             type: object
  *             required:
  *               - name
+ *               - password
  *               - email
  *               - phone
  *             properties:
  *               name:
  *                 type: string
+ *               password:
+ *                  type: string
  *               email:
  *                 type: string
  *                 format: email
@@ -79,6 +72,9 @@ router.get('/', async (req: Request, res: Response) => {
  *                 _id:
  *                   type: string
  *                   example: 60d32c5d0e58f40015a3f32c
+ *                 password:
+ *                   type: string
+ *                   example: password
  *                 name:
  *                   type: string
  *                   example: John Doe
@@ -89,23 +85,51 @@ router.get('/', async (req: Request, res: Response) => {
  *                    type: string
  *                    example: 055-5555555
  */
-router.post('/user', async (req: Request, res: Response) => {
+router.post('/signUp', SignUp);
 
-    const toursList: ITour[] = [];
-    const { name, email, phone } = req.body;
+/**
+ * @swagger
+ * /api/users/signIn:
+ *   post:
+ *     summary: connent exists user
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - password
+ *               - email
+ *             properties:
+ *               password:
+ *                  type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *     responses:
+ *       '201':
+ *         description: Created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                   example: 60d32c5d0e58f40015a3f32c
+ *                 password:
+ *                   type: string
+ *                   example: password
+ *                 email:
+ *                   type: string
+ *                   example: john.doe@gmail.com
+ */
+router.post('/signIn', SignIn);
 
-    try {
-        const user: IUser = new User({ name, email, phone, toursList });
-        const savedUser = await user.save(); // Save the user to MongoDB
-        res.status(201).json(savedUser); // Return the saved user object
-    }
-    catch (error) {
-        if (error instanceof Error) {
-            res.status(400).json({ message: error.message });
-        } else {
-            res.status(500).json({ message: 'Internal Server Error' });
-        }
-    }
+router.get('/protected', protect, (req: Request, res: Response) => {
+    res.status(200).json({ message: 'This is a protected route' });
 });
 
 export default router;
