@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/database';
 import userRoute from './routes/user.route';
+import businessRoute from './routes/business.route';
+import serviceRoute from './routes/services.route';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import protectedRoutes from './routes/user.route';
@@ -14,6 +16,10 @@ const port = process.env.PORT || 3000;
 connectDB();
 
 app.use(express.json());
+
+app.use('/api/services', serviceRoute)
+
+app.use('/api/business', businessRoute)
 
 app.use('/api', protectedRoutes);
 
