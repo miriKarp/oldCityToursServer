@@ -1,5 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 interface AuthRequest extends Request {
     user?: any;
@@ -14,6 +17,7 @@ export const protect = (req: AuthRequest, res: Response, next: NextFunction) => 
     ) {
         token = req.headers.authorization.split(' ')[1];
     }
+    console.log("token: " + token);
 
     if (!token) {
         return res.status(401).json({ message: 'Not authorized, no token' });
@@ -24,6 +28,6 @@ export const protect = (req: AuthRequest, res: Response, next: NextFunction) => 
         req.user = decoded;
         next();
     } catch (error) {
-        res.status(401).json({ message: 'Not authorized, token failed' });
+        res.status(401).json({ message: 'Not authorized, token failed. error: ' + error });
     }
 };

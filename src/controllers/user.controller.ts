@@ -2,6 +2,9 @@ import { Request, Response } from 'express';
 import User, { IUser } from "../models/User.modle";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export const getUsers = async (req: Request, res: Response) => {
     try {
@@ -33,7 +36,7 @@ export const SignUp = async (req: Request, res: Response) => {
             { expiresIn: '1h' })
         res.status(201).json({ token });
     } catch (error) {
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error: ' + error });
     }
 }
 

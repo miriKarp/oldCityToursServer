@@ -17,6 +17,8 @@ const router = Router();
  *   get:
  *     summary: Retrieve all users
  *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       '200':
  *         description: A list of users
@@ -32,7 +34,7 @@ const router = Router();
  *                   email:
  *                     type: string
  */
-router.get('/', protect, getUsers);
+router.get('/users', protect, getUsers);
 
 /**
  * @swagger

@@ -14,6 +14,19 @@ const options: swaggerJSDoc.Options = {
                 url: 'http://localhost:3000',
                 description: 'Development server',
             },
+        ], components: {
+            securitySchemes: {
+                BearerAuth: {
+                    type: 'http',
+                    scheme: 'bearer',
+                    bearerFormat: 'JWT',
+                },
+            },
+        },
+        security: [
+            {
+                BearerAuth: [],
+            },
         ],
     },
     apis: [path.resolve(__dirname, '../routes/*.ts')], // Path to your API routes
