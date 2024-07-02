@@ -27,6 +27,7 @@ export const addService = async (req: Request, res: Response) => {
 
 export const updateService = async (req: Request, res: Response) => {
     const { id, description, price, durationTime } = req.body;
+
     try {
         const business = await Business.findOne();
         if (!business) {
@@ -43,9 +44,15 @@ export const updateService = async (req: Request, res: Response) => {
             return res.status(404).json({ message: 'service not found' });
         }
 
-        service.description = description;
-        service.price = price;
-        service.durationTime = durationTime;
+        if (description != "string") {
+            service.description = description;
+        }
+        if (price != "string") {
+            service.price = price;
+        }
+        if (durationTime != "string") {
+            service.durationTime = durationTime;
+        }
 
         await business.save();
 
@@ -56,9 +63,7 @@ export const updateService = async (req: Request, res: Response) => {
 
     }
 
-
 }
-
 
 export const deleteService = async (req: Request, res: Response) => {
     const { serviceId } = req.params;
@@ -86,5 +91,3 @@ export const deleteService = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Failed to delete service' });
     }
 };
-
-

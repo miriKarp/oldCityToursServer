@@ -5,7 +5,6 @@ interface IService extends Document {
     description: string,
     price: number,
     durationTime: number,
-
 }
 
 const ServicesSchema: Schema = new Schema({
