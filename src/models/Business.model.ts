@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import Service, { IService, ServicesSchema } from './Service.nodel';
-import User, { IUser } from './User.modle';
+import { IService, ServicesSchema } from './Service.nodel';
+import { IUser, UserSchema } from './User.modle';
 
 interface IBusiness extends Document {
     manager: string,
@@ -17,8 +17,7 @@ const BusinessSchema: Schema = new Schema({
     phone: { type: String, unique: true },
     email: { type: String, unique: true, required: true },
     services: { type: [ServicesSchema] },
-    users: { type: Schema.Types.ObjectId, ref: 'User' },
-
+    users: { type: [UserSchema] },
 });
 
 BusinessSchema.statics.createInstance = async function (businessData: Partial<IBusiness>) {
