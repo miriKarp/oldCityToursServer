@@ -102,14 +102,14 @@ router.post('/signUp', SignUp);
  *           schema:
  *             type: object
  *             required:
- *               - password
  *               - email
+ *               - password
  *             properties:
- *               password:
- *                  type: string
  *               email:
  *                 type: string
  *                 format: email
+ *               password:
+ *                  type: string
  *     responses:
  *       '201':
  *         description: Created
