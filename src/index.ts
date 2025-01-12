@@ -11,7 +11,10 @@ import protectedRoutes from './routes/user.route';
 dotenv.config();
 
 const app = express();
+const cors = require('cors');
 const port = process.env.PORT || 3000;
+
+app.use(cors());
 
 connectDB();
 
