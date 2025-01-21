@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IService, ServicesSchema } from './Service.nodel';
+import { IService, ServicesSchema } from './Service.model';
 import { IUser, UserSchema } from './User.modle';
 
 interface IBusiness extends Document {

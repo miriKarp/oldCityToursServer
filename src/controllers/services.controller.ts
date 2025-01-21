@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import Service, { IService } from '../models/Service.nodel';
+import Service, { IService } from '../models/Service.model';
 import Business from '../models/Business.model';
 
 export const addService = async (req: Request, res: Response) => {
