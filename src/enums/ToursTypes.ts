@@ -1,4 +1,4 @@
-enum ToursTypes {
+export enum ToursTypes {
     WesternWallTunnels = 1,
     tourBetweenWalls = 2,
     DavidCityTour = 3,

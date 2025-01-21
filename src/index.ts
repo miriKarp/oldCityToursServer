@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/database';
+import tourRoute from './routes/tours.route';
 import userRoute from './routes/user.route';
 import businessRoute from './routes/business.route';
 import serviceRoute from './routes/services.route';
@@ -19,6 +20,8 @@ app.use(cors());
 connectDB();
 
 app.use(express.json());
+
+app.use('/api/tours', tourRoute);
 
 app.use('/api/services', serviceRoute)
 

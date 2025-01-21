@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
+import { ToursTypes } from '../enums/ToursTypes';
 
 interface ITour extends Document {
     id: Number,
@@ -17,9 +18,9 @@ const TourSchema: Schema = new Schema({
     phone: { type: String, unique: true },
     note: { type: String, },
     group: { type: Boolean, },
-    tourType: { type: ToursTypes, required: true },
+    tourType: { type: Number, required: true },
 });
 
-const Tour = mongoose.model<ITour>('User', TourSchema);
+const Tour = mongoose.model<ITour>('Tour', TourSchema);
 export default Tour;
 export { ITour };
