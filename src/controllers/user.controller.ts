@@ -47,11 +47,11 @@ export const SignIn = async (req: Request, res: Response) => {
 
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(400).json({ message: 'User does not exist' });
+            return res.status(404).json({ message: 'User does not exist' });
         }
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
-            return res.status(400).json({ message: 'Invalid details' });
+            return res.status(401).json({ message: 'Invalid details' });
         }
         const token = jwt.sign({
             userId: user._id, name: user.name, email: user.email, phone: user.phone
@@ -64,5 +64,3 @@ export const SignIn = async (req: Request, res: Response) => {
     }
 
 }
-
-
