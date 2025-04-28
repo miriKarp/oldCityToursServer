@@ -46,6 +46,7 @@ export const SignIn = async (req: Request, res: Response) => {
     try {
 
         const user = await User.findOne({ email });
+        const name = user?.name;
         if (!user) {
             return res.status(404).json({ message: 'User does not exist' });
         }
@@ -58,7 +59,7 @@ export const SignIn = async (req: Request, res: Response) => {
         },
             process.env.JWT_SECRET || 'your_jwt_secret',
             { expiresIn: '1h' })
-        res.status(200).json({ token });
+        res.status(200).json({ token, user });
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
