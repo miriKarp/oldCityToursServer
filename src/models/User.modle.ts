@@ -6,6 +6,7 @@ interface IUser extends Document {
     password: string
     email: string,
     phone: string,
+    isManager: boolean,
     toursList: ITour[],
 }
 
@@ -14,6 +15,7 @@ const UserSchema: Schema = new Schema({
     password: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     phone: { type: String, required: true, unique: true },
+    isManager: { type: Boolean, require: true },
     toursList: [{ type: Schema.Types.ObjectId, ref: 'Tour', required: true }],
 });
 

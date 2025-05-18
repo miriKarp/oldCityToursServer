@@ -63,6 +63,8 @@ router.get('/users', protect, getUsers);
  *                 format: email
  *               phone:
  *                 type: string
+ *               isManager:
+ *                 type: boolean
  *     responses:
  *       '201':
  *         description: Created
@@ -86,6 +88,9 @@ router.get('/users', protect, getUsers);
  *                 phone:
  *                    type: string
  *                    example: 055-5555555
+ *                 isManager:
+ *                    type: boolean
+ *                    example: true
  */
 router.post('/signUp', SignUp);
 
