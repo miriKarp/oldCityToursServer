@@ -17,7 +17,6 @@ export const protect = (req: AuthRequest, res: Response, next: NextFunction) => 
     ) {
         token = req.headers.authorization.split(' ')[1];
     }
-    console.log("token: " + token);
 
     if (!token) {
         return res.status(401).json({ message: 'Not authorized, no token' });
