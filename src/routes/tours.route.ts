@@ -16,6 +16,8 @@ const router = Router();
  *   get:
  *     summary: Get all tours
  *     tags: [Tours]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       '200':
  *         description: A list of tours
@@ -24,9 +26,23 @@ const router = Router();
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Tour'
- *       '500':
- *         description: Server error
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: number
+ *                   time:
+ *                     type: string
+ *                     format: date-time
+ *                   invitingName:
+ *                     type: string
+ *                   phone:
+ *                     type: string
+ *                   note:
+ *                     type: string
+ *                   group:
+ *                     type: boolean
+ *                   tourType:
+ *                     type: number
  */
 router.get('/', getTours);
 
@@ -43,7 +59,6 @@ router.get('/', getTours);
  *           schema:
  *             type: object
  *             required:
- *               - id
  *               - time
  *               - invitingName
  *               - tourType

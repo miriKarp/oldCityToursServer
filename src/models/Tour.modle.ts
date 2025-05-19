@@ -12,7 +12,7 @@ interface ITour extends Document {
 }
 
 const TourSchema: Schema = new Schema({
-    id: { type: Number, required: true, unique: true },
+    id: { type: Number, unique: true },
     time: { type: Date, required: true },
     invitingName: { type: String, required: true },
     phone: { type: String, unique: true },

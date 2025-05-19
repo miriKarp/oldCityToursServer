@@ -3,6 +3,7 @@ import Tour, { ITour } from '../models/Tour.modle';
 import { ToursTypes } from '../enums/ToursTypes';
 
 export const getTours = async (req: Request, res: Response) => {
+
     try {
         const tours = await Tour.find();
         res.status(200).json(tours);
@@ -16,7 +17,7 @@ export const getTours = async (req: Request, res: Response) => {
 }
 
 export const addTour = async (req: Request, res: Response) => {
-    const { id, time, invitingName, phone, note, group, tourType } = req.body;
+    const { time, invitingName, phone, note, group, tourType } = req.body;
     try {
         const existingTour = await Tour.findOne({ time });
         if (existingTour) {
@@ -25,7 +26,10 @@ export const addTour = async (req: Request, res: Response) => {
         if (!Object.values(ToursTypes).includes(tourType)) {
             return res.status(400).json({ message: 'Invalid tourType value' });
         }
-        const newTour: ITour = new Tour({ id, time, invitingName, phone, note, group, tourType });
+        const lastTour = await Tour.findOne().sort({ id: -1 }).limit(1);
+        const nextId = lastTour ? lastTour.id + 1 : 1;
+
+        const newTour: ITour = new Tour({ nextId, time, invitingName, phone, note, group, tourType });
         await newTour.save();
         res.status(201).json('Tour added')
     } catch (error) {

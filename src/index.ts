@@ -27,14 +27,18 @@ app.use('/api/services', serviceRoute)
 
 app.use('/api/business', businessRoute)
 
-app.use('/api', protectedRoutes);
-
 app.use('/api/users', userRoute);
+
+app.use('/api', protectedRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('Hello, world!');
+    res.send('ברוכים הבאים לאתר שלנו old cities tours!!!');
+});
+
+app.use((req, res, next) => {
+    res.status(404).send('API Route not found');
 });
 
 app.listen(port, () => {
