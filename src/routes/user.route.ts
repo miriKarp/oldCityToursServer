@@ -34,7 +34,7 @@ const router = Router();
  *                   email:
  *                     type: string
  */
-router.get('/users', protect, getUsers);
+router.get('/', protect, getUsers);
 
 /**
  * @swagger

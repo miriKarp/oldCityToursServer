@@ -29,7 +29,7 @@ export const addTour = async (req: Request, res: Response) => {
         const lastTour = await Tour.findOne().sort({ id: -1 }).limit(1);
         const nextId = lastTour ? lastTour.id + 1 : 1;
 
-        const newTour: ITour = new Tour({ nextId, time, invitingName, phone, note, group, tourType });
+        const newTour: ITour = new Tour({ Id: nextId, time, invitingName, phone, note, group, tourType });
         await newTour.save();
         res.status(201).json('Tour added')
     } catch (error) {
@@ -66,8 +66,6 @@ export const updateTour = async (req: Request, res: Response) => {
     }
 };
 
-
-
 export const deleteTour = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id, 10);
     if (isNaN(id)) {
@@ -85,5 +83,3 @@ export const deleteTour = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Server error: ' + error });
     }
 };
-
-
