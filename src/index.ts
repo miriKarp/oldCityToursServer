@@ -29,8 +29,6 @@ app.use('/api/business', businessRoute)
 
 app.use('/api/users', userRoute);
 
-app.use('/api', protectedRoutes);
-
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.get('/', (req: Request, res: Response) => {

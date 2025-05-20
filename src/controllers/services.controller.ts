@@ -2,17 +2,43 @@ import { Request, Response } from 'express';
 import Service, { IService } from '../models/Service.model';
 import Business from '../models/Business.model';
 
+export const getServices = async (req: Request, res: Response) => {
+    try {
+        const services = await Service.find();
+        res.status(200).json(services);
+    } catch (error) {
+        if (error instanceof Error) {
+            res.status(400).json({ message: error.message });
+        } else {
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }
+};
+
 export const addService = async (req: Request, res: Response) => {
     const { description, price, durationTime } = req.body;
+    console.log("נכנסתי");
+
     try {
+        console.log("i in the try");
 
         const business = await Business.findOne();
+        console.log('Business', business);
 
         if (!business) {
             return res.status(404).json({ message: 'Business not found' });
         }
 
-        const newService: IService = new Service({ id: business.services.length + 1, description, price, durationTime });
+        if (!Array.isArray(business.services)) {
+            business.services = [];
+        }
+
+        const newService = {
+            id: business.services.length + 1,
+            description,
+            price,
+            durationTime
+        };
 
         business.services.push(newService);
 

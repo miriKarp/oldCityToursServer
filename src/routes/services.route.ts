@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { addService, deleteService, updateService } from '../controllers/services.controller';
+import { getServices, addService, deleteService, updateService } from '../controllers/services.controller';
 
 const router = Router();
 
@@ -9,6 +9,32 @@ const router = Router();
  *   name: Services
  *   description: Service management APIs
  */
+
+/**
+ * @swagger
+ * /api/services/services:
+ *   get:
+ *     summary: Retrieve all services
+ *     tags: [Services]
+ *     responses:
+ *       '200':
+ *         description: A list of services
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   description:
+ *                     type: string
+ *                   price:
+ *                     type: number
+ *                   durationTime:
+ *                     type: number
+ */
+router.get('/services', getServices);
+
 
 /**
  * @swagger

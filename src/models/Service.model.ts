@@ -1,17 +1,17 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IService extends Document {
-    id: Number,
     description: string,
     price: number,
     durationTime: number,
+    business: mongoose.Schema.Types.ObjectId,
 }
 
 const ServicesSchema: Schema = new Schema({
-    id: { type: Number, required: true, unique: true },
     description: { type: String, required: true },
     price: { type: Number },
     durationTime: { type: Number },
+    business: { type: mongoose.Schema.Types.ObjectId, ref: 'Business', required: true }, 
 });
 
 const Service = mongoose.model<IService>('Service', ServicesSchema);
