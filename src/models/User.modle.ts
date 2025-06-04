@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Types } from 'mongoose';
 import Tour, { ITour } from './Tour.modle';
 
 interface IUser extends Document {
@@ -7,7 +7,9 @@ interface IUser extends Document {
     email: string,
     phone: string,
     isManager: boolean,
-    toursList: ITour[],
+    toursList: Types.ObjectId[],
+    managerId?: mongoose.Types.ObjectId;
+    users?: mongoose.Types.ObjectId[];
 }
 
 const UserSchema: Schema = new Schema({
@@ -17,6 +19,8 @@ const UserSchema: Schema = new Schema({
     phone: { type: String, required: true, unique: true },
     isManager: { type: Boolean, require: true },
     toursList: [{ type: Schema.Types.ObjectId, ref: 'Tour', required: true }],
+    managerId: { type: Schema.Types.ObjectId, ref: 'User' },
+    users: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
 const User = mongoose.model<IUser>('User', UserSchema);

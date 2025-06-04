@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import Service, { IService } from '../models/Service.model';
 import Business from '../models/Business.model';
+import mongoose from 'mongoose';
 
 export const getServices = async (req: Request, res: Response) => {
     try {
@@ -17,101 +18,95 @@ export const getServices = async (req: Request, res: Response) => {
 
 export const addService = async (req: Request, res: Response) => {
     const { description, price, durationTime } = req.body;
-    console.log("נכנסתי");
 
     try {
-        console.log("i in the try");
-
         const business = await Business.findOne();
-        console.log('Business', business);
 
         if (!business) {
             return res.status(404).json({ message: 'Business not found' });
         }
 
+        const newService = new Service({
+            description,
+            price,
+            durationTime,
+            business: business._id
+        });
+
+        await newService.save();
+
         if (!Array.isArray(business.services)) {
             business.services = [];
         }
 
-        const newService = {
-            id: business.services.length + 1,
-            description,
-            price,
-            durationTime
-        };
-
-        business.services.push(newService);
+        business.services.push(newService._id);
 
         await business.save();
 
         res.status(201).json(newService);
 
     } catch (error) {
-        res.status(500).json({ message: 'Server error ====' + error });
+        res.status(500).json({ message: 'Server error: ' + error });
     }
 }
+
 
 export const updateService = async (req: Request, res: Response) => {
     const { id, description, price, durationTime } = req.body;
 
     try {
-        const business = await Business.findOne();
-        if (!business) {
-            return res.status(404).json({ message: 'Business not found' });
-        }
+        const service = await Service.findById(id);
 
-        const services: IService[] = business.services as IService[];
-        if (!services || !Array.isArray(services)) {
-            return res.status(500).json({ message: 'Services array not properly initialized' });
-        }
-
-        const service = services.find((service: IService) => service.id === id);
         if (!service) {
-            return res.status(404).json({ message: 'service not found' });
+            return res.status(404).json({ message: 'Service not found' });
         }
 
-        if (description != "string") {
+        if (typeof description === 'string') {
             service.description = description;
         }
-        if (price != "string") {
+        if (typeof price === 'number') {
             service.price = price;
         }
-        if (durationTime != "string") {
+        if (typeof durationTime === 'number') {
             service.durationTime = durationTime;
         }
 
-        await business.save();
+        await service.save();
 
-        res.status(201).json(service);
+        res.status(200).json(service);
 
     } catch (error) {
-        res.status(500).json({ message: 'Server error ====' + error });
-
+        res.status(500).json({ message: 'Server error: ' + error });
     }
-
-}
+};
 
 export const deleteService = async (req: Request, res: Response) => {
     const { serviceId } = req.params;
-    const parsedServiceId = parseInt(serviceId, 10);
+
+    if (!mongoose.Types.ObjectId.isValid(serviceId)) {
+        return res.status(400).json({ message: 'Invalid service ID' });
+    }
 
     try {
-        const business = await Business.findOne();
+        const serviceToDelete = await Service.findById(serviceId);
+        if (!serviceToDelete) {
+            return res.status(404).json({ message: 'Service not found.' });
+        }
+
+        const business = await Business.findById(serviceToDelete.business);
         if (!business) {
             return res.status(404).json({ message: 'Business not found' });
         }
 
-        const serviceIndex = business.services.findIndex((service: IService) => service.id === parsedServiceId);
+        await Service.findByIdAndDelete(serviceId);
 
-        if (serviceIndex === -1) {
-            return res.status(404).json({ message: 'Service not found in business' });
-        }
-
-        business.services.splice(serviceIndex, 1);
+        business.services = business.services.filter(
+            (id: mongoose.Types.ObjectId) => id.toString() !== serviceId
+        );
 
         await business.save();
 
-        res.status(201).json({ message: 'Service deleted successfully', business });
+        res.status(200).json({ message: 'Service deleted successfully' });
 
     } catch (error) {
         res.status(500).json({ message: 'Failed to delete service' });

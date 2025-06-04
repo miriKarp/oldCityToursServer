@@ -2,7 +2,6 @@ import mongoose, { Schema, Document } from 'mongoose';
 import { ToursTypes } from '../enums/ToursTypes';
 
 interface ITour extends Document {
-    id: Number,
     time: Date,
     invitingName: String,
     phone: String,
@@ -15,7 +14,7 @@ const TourSchema: Schema = new Schema({
     id: { type: Number, unique: true },
     time: { type: Date, required: true },
     invitingName: { type: String, required: true },
-    phone: { type: String, unique: true },
+    phone: { type: String, },
     note: { type: String, },
     group: { type: Boolean, },
     tourType: { type: Number, required: true },

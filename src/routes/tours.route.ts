@@ -17,7 +17,7 @@ const router = Router();
  *     summary: Get all tours
  *     tags: [Tours]
  *     security:
- *       - BearerAuth: []
+ *       - bearerAuth: []
  *     responses:
  *       '200':
  *         description: A list of tours
@@ -28,8 +28,6 @@ const router = Router();
  *               items:
  *                 type: object
  *                 properties:
- *                   id:
- *                     type: number
  *                   time:
  *                     type: string
  *                     format: date-time
@@ -52,6 +50,8 @@ router.get('/', getTours);
  *   post:
  *     summary: Add a new tour
  *     tags: [Tours]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -88,13 +88,14 @@ router.get('/', getTours);
  */
 router.post('/addTour', addTour);
 
-
 /**
  * @swagger
  * /api/tours/updateTour/{id}:
  *   put:
  *     summary: Update an existing tour
  *     tags: [Tours]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -138,6 +139,8 @@ router.put('/updateTour/:id', updateTour);
  *   delete:
  *     summary: Delete an existing tour
  *     tags: [Tours]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -154,6 +157,5 @@ router.put('/updateTour/:id', updateTour);
  *         description: Server error
  */
 router.delete('/deleteTour/:id', deleteTour);
-
 
 export default router;

@@ -1,36 +1,37 @@
-import router from './user.route';
-import { createBusiness, updateDetailsBusiness } from '../controllers/business.controller';
+import { Router } from 'express';
+import { SignIn, SignUp } from '../controllers/user.controller';
+
+const router = Router();
 
 /**
  * @swagger
- * tags:
- *   name: Business
- *   description: APIs for managing business information
- */
-
-/**
- * @swagger
- * /api/business/createBusiness:
+ * /api/users/signUp:
  *   post:
- *     summary: Create a new business instance
- *     tags: [Business]
- *     security:
- *       - bearerAuth: []
+ *     summary: Create a new user
+ *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - name
+ *               - password
+ *               - email
+ *               - phone
  *             properties:
- *               manager:
+ *               name:
  *                 type: string
  *               password:
- *                 type: string
+ *                  type: string
  *               email:
  *                 type: string
+ *                 format: email
  *               phone:
  *                 type: string
+ *               isManager:
+ *                 type: boolean
  *     responses:
  *       '201':
  *         description: Created
@@ -42,44 +43,48 @@ import { createBusiness, updateDetailsBusiness } from '../controllers/business.c
  *                 _id:
  *                   type: string
  *                   example: 60d32c5d0e58f40015a3f32c
- *                 manager:
+ *                 password:
+ *                   type: string
+ *                   example: password
+ *                 name:
  *                   type: string
  *                   example: John Doe
  *                 email:
  *                   type: string
  *                   example: john.doe@gmail.com
  *                 phone:
- *                   type: string
- *                   example: 055-5555555
+ *                    type: string
+ *                    example: 055-5555555
+ *                 isManager:
+ *                    type: boolean
+ *                    example: true
  */
-router.post('/createBusiness', createBusiness)
+router.post('/signUp', SignUp);
 
 /**
  * @swagger
- * /api/business/updateDetailsBusiness:
- *   put:
- *     summary: update details business details
- *     tags: [Business]
- *     security:
- *       - bearerAuth: []
+ * /api/users/signIn:
+ *   post:
+ *     summary: connent exists user
+ *     tags: [Users]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - email
+ *               - password
  *             properties:
- *               manager:
- *                 type: string
- *               password:
- *                 type: string
  *               email:
  *                 type: string
- *               phone:
- *                 type: string
+ *                 format: email
+ *               password:
+ *                  type: string
  *     responses:
  *       '201':
- *         description: Business updated
+ *         description: Created
  *         content:
  *           application/json:
  *             schema:
@@ -88,20 +93,13 @@ router.post('/createBusiness', createBusiness)
  *                 _id:
  *                   type: string
  *                   example: 60d32c5d0e58f40015a3f32c
- *                 manager:
+ *                 password:
  *                   type: string
- *                   example: John Doe
+ *                   example: password
  *                 email:
  *                   type: string
  *                   example: john.doe@gmail.com
- *                 phone:
- *                   type: string
- *                   example: 055-5555555
- *       '404':
- *         description: Business not found
- *       '500':
- *         description: Server error
  */
-router.put('/updateDetailsBusiness', updateDetailsBusiness)
+router.post('/signIn', SignIn);
 
 export default router;

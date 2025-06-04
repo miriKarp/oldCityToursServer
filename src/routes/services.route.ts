@@ -16,6 +16,8 @@ const router = Router();
  *   get:
  *     summary: Retrieve all services
  *     tags: [Services]
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       '200':
  *         description: A list of services
@@ -35,13 +37,14 @@ const router = Router();
  */
 router.get('/services', getServices);
 
-
 /**
  * @swagger
  * /api/services/addService:
  *   post:
  *     summary: Add a new service
  *     tags: [Services]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -86,6 +89,8 @@ router.post('/addService', addService);
  *   put:
  *     summary: Update an existing service
  *     tags: [Services]
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -135,6 +140,8 @@ router.put('/updateService', updateService);
  *   delete:
  *     summary: Delete a service by id
  *     tags: [Services]
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: path
  *         name: serviceId

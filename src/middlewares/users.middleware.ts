@@ -1,14 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import User, { IUser } from '../models/User.modle';
 
 dotenv.config();
 
-interface AuthRequest extends Request {
-    user?: any;
+export interface AuthRequest extends Request {
+    user?: IUser;
 }
 
-export const protect = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const protect = async (req: AuthRequest, res: Response, next: NextFunction) => {
     let token: string | undefined;
 
     if (
@@ -24,7 +25,13 @@ export const protect = (req: AuthRequest, res: Response, next: NextFunction) => 
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret');
-        req.user = decoded;
+
+        const user = await User.findById((decoded as any).userId);
+
+        if (!user) {
+            return res.status(401).json({ message: 'User not found' });
+        }
+        req.user = user;
 
         next();
     } catch (error) {

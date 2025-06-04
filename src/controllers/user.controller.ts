@@ -3,6 +3,7 @@ import User, { IUser } from "../models/User.modle";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import Business from '../models/Business.model';
 
 dotenv.config();
 
@@ -31,14 +32,25 @@ export const SignUp = async (req: Request, res: Response) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         let isManager = false;
+        let managerId = null;
 
         if (email === 'excitingtours100@gmail.com') {
             isManager = true;
+        } else {
+            const manager = await User.findOne({ email: 'excitingtours100@gmail.com' });
+            if (!manager) {
+                return res.status(400).json({ message: 'Manager not found' });
+            }
+            managerId = manager._id;
         }
 
-        const newUser: IUser = new User({ name, password: hashedPassword, email, phone, isManager });
+        const newUser: IUser = new User({ name, password: hashedPassword, email, phone, isManager, managerId });
 
         await newUser.save();
+
+        if (managerId) {
+            await Business.updateOne({}, { $addToSet: { users: newUser._id } });
+        }
 
         const token = jwt.sign({
             userId: newUser._id, name: newUser.name, email: newUser.email, phone: newUser.phone
@@ -62,9 +74,6 @@ export const SignUp = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Server error: ' + error });
     }
 }
-
-
-
 
 export const SignIn = async (req: Request, res: Response) => {
 

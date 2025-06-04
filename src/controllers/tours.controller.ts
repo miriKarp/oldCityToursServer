@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
 import Tour, { ITour } from '../models/Tour.modle';
+import User from '../models/User.modle';
 import { ToursTypes } from '../enums/ToursTypes';
+import { AuthRequest } from '../middlewares/users.middleware';
 
 export const getTours = async (req: Request, res: Response) => {
 
@@ -16,9 +18,15 @@ export const getTours = async (req: Request, res: Response) => {
     }
 }
 
-export const addTour = async (req: Request, res: Response) => {
+export const addTour = async (req: Request & { user?: any }, res: Response) => {
     const { time, invitingName, phone, note, group, tourType } = req.body;
     try {
+        const user = req.user;
+
+        if (!user) {
+            return res.status(401).json({ message: 'User not authenticated' });
+        }
+
         const existingTour = await Tour.findOne({ time });
         if (existingTour) {
             return res.status(400).json({ message: 'Tour already exists in this time' });
@@ -29,9 +37,16 @@ export const addTour = async (req: Request, res: Response) => {
         const lastTour = await Tour.findOne().sort({ id: -1 }).limit(1);
         const nextId = lastTour ? lastTour.id + 1 : 1;
 
-        const newTour: ITour = new Tour({ Id: nextId, time, invitingName, phone, note, group, tourType });
-        await newTour.save();
-        res.status(201).json('Tour added')
+        const newTour: ITour = new Tour({ id: nextId, time, invitingName, phone, note, group, tourType });
+        const savedTour = await newTour.save();
+
+        await User.findByIdAndUpdate(
+            user._id,
+            { $push: { toursList: savedTour._id } },
+            { new: true }
+        );
+
+        res.status(201).json({ message: 'Tour added successfully', tour: savedTour })
     } catch (error) {
         res.status(500).json({ message: 'Server error: ' + error });
     }
