@@ -104,7 +104,7 @@ router.post('/addService', addService);
  *               - durationTime
  *             properties:
  *               id:
- *                 type: number
+ *                 type: string
  *               description:
  *                 type: string
  *               price:

@@ -9,7 +9,7 @@ import serviceRoute from './routes/services.route';
 import swaggerUi from 'swagger-ui-express';
 import swaggerSpec from './config/swagger';
 import protectedRoutes from './routes/user.route';
-import { protect } from './middlewares/users.middleware';
+import { protect, adminOnly } from './middlewares/users.middleware';
 
 dotenv.config();
 
@@ -29,6 +29,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(protect);
+app.use(adminOnly);
 
 app.use('/api/users', userRoute);
 app.use('/api/tours', tourRoute);

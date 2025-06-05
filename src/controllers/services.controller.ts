@@ -52,10 +52,12 @@ export const addService = async (req: Request, res: Response) => {
 
 
 export const updateService = async (req: Request, res: Response) => {
-    const { id, description, price, durationTime } = req.body;
+    const { _id, description, price, durationTime } = req.body;
+    console.log('id:', _id, 'description:', description, 'price:', price, 'durationTime:', durationTime);
+    
 
     try {
-        const service = await Service.findById(id);
+        const service = await Service.findById(_id);
 
         if (!service) {
             return res.status(404).json({ message: 'Service not found' });
