@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { getServices, addService, deleteService, updateService } from '../controllers/services.controller';
+import { adminOnly, protect } from '../middlewares/users.middleware';
 
 const router = Router();
 
@@ -81,7 +82,7 @@ router.get('/services', getServices);
  *       '500':
  *         description: Server error
  */
-router.post('/addService', addService);
+router.post('/addService', protect, adminOnly, addService);
 
 /**
  * @swagger
@@ -132,7 +133,7 @@ router.post('/addService', addService);
  *       '500':
  *         description: Server error
  */
-router.put('/updateService', updateService);
+router.put('/updateService', protect, adminOnly, updateService);
 
 /**
  * @swagger
@@ -183,7 +184,7 @@ router.put('/updateService', updateService);
  *                   type: string
  *                   example: Failed to delete service
  */
-router.delete('/deleteService/:serviceId', deleteService);
+router.delete('/deleteService/:serviceId', protect, adminOnly, deleteService);
 
 
 export default router;

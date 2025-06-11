@@ -28,12 +28,13 @@ app.get('/', (req: Request, res: Response) => {
 });
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.use('/api/services', serviceRoute)
+
 app.use(protect);
-app.use(adminOnly);
 
 app.use('/api/users', userRoute);
 app.use('/api/tours', tourRoute);
-app.use('/api/services', serviceRoute)
+
 app.use('/api/business', businessRoute)
 
 app.use((req, res, next) => {

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { addTour, deleteTour, getTours, updateTour } from '../controllers/tours.controller';
+import { adminOnly } from '../middlewares/users.middleware';
 
 const router = Router();
 
@@ -42,7 +43,7 @@ const router = Router();
  *                   tourType:
  *                     type: number
  */
-router.get('/', getTours);
+router.get('/', adminOnly, getTours);
 
 /**
  * @swagger
@@ -131,7 +132,7 @@ router.post('/addTour', addTour);
  *       '500':
  *         description: Server error
  */
-router.put('/updateTour/:id', updateTour);
+router.put('/updateTour/:id', adminOnly, updateTour);
 
 /**
  * @swagger
@@ -156,6 +157,6 @@ router.put('/updateTour/:id', updateTour);
  *       '500':
  *         description: Server error
  */
-router.delete('/deleteTour/:id', deleteTour);
+router.delete('/deleteTour/:id', adminOnly, deleteTour);
 
 export default router;

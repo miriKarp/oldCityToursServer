@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { getUsers } from '../controllers/user.controller';
-import { protect } from '../middlewares/users.middleware';
+import { adminOnly, protect } from '../middlewares/users.middleware';
 
 const router = Router();
 /**
@@ -33,7 +33,7 @@ const router = Router();
  *                   email:
  *                     type: string
  */
-router.get('/', getUsers);
+router.get('/', adminOnly, getUsers);
 
 export default router;
 
