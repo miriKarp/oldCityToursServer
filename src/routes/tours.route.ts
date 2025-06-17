@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { addTour, deleteTour, getTours, updateTour } from '../controllers/tours.controller';
-import { adminOnly } from '../middlewares/users.middleware';
+import { adminOnly, protect } from '../middlewares/users.middleware';
 
 const router = Router();
 
@@ -43,7 +43,7 @@ const router = Router();
  *                   tourType:
  *                     type: number
  */
-router.get('/', adminOnly, getTours);
+router.get('/', protect, getTours);
 
 /**
  * @swagger

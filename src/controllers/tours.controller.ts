@@ -4,10 +4,21 @@ import User from '../models/User.modle';
 import { ToursTypes } from '../enums/ToursTypes';
 import { AuthRequest } from '../middlewares/users.middleware';
 
-export const getTours = async (req: Request, res: Response) => {
+export const getTours = async (req: AuthRequest, res: Response) => {
 
     try {
-        const tours = await Tour.find();
+        const user = req.user;
+
+        if (!user) {
+            return res.status(401).json({ message: 'לא מחובר' });
+        }
+        let tours;
+        if (user.isManager) {
+            tours = await Tour.find();
+        } else {
+            tours = await Tour.find({ _id: { $in: user.toursList } });
+        }
+
         res.status(200).json(tours);
     } catch (error) {
         if (error instanceof Error) {
@@ -18,7 +29,7 @@ export const getTours = async (req: Request, res: Response) => {
     }
 }
 
-export const addTour = async (req: Request & { user?: any }, res: Response) => {
+export const addTour = async (req: AuthRequest, res: Response) => {
     const { time, invitingName, phone, note, group, tourType } = req.body;
     try {
         const user = req.user;
