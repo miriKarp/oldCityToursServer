@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import Tour, { ITour } from '../models/Tour.modle';
 import User from '../models/User.modle';
 import { ToursTypes } from '../enums/ToursTypes';
-import { AuthRequest } from '../middlewares/users.middleware';
+import mongoose from 'mongoose';
 
 export const getTours = async (req: Request, res: Response) => {
 
@@ -35,9 +35,8 @@ export const addTour = async (req: Request & { user?: any }, res: Response) => {
             return res.status(400).json({ message: 'Invalid tourType value' });
         }
         const lastTour = await Tour.findOne().sort({ id: -1 }).limit(1);
-        const nextId = lastTour ? lastTour.id + 1 : 1;
 
-        const newTour: ITour = new Tour({ id: nextId, time, invitingName, phone, note, group, tourType });
+        const newTour: ITour = new Tour({ time, invitingName, phone, note, group, tourType });
         const savedTour = await newTour.save();
 
         await User.findByIdAndUpdate(
@@ -53,12 +52,8 @@ export const addTour = async (req: Request & { user?: any }, res: Response) => {
 }
 
 export const updateTour = async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) {
-        return res.status(400).json({ message: 'Invalid ID' });
-    }
 
-    const { time, invitingName, phone, note, group, tourType } = req.body;
+    const { _id, time, invitingName, phone, note, group, tourType } = req.body;
 
     try {
         if (!Object.values(ToursTypes).includes(tourType)) {
@@ -66,7 +61,7 @@ export const updateTour = async (req: Request, res: Response) => {
         }
 
         const updatedTour = await Tour.findOneAndUpdate(
-            { id },
+            { _id },
             { time, invitingName, phone, note, group, tourType },
             { new: true, runValidators: true }
         );
@@ -82,16 +77,19 @@ export const updateTour = async (req: Request, res: Response) => {
 };
 
 export const deleteTour = async (req: Request, res: Response) => {
-    const id = parseInt(req.params.id, 10);
-    if (isNaN(id)) {
-        return res.status(400).json({ message: 'Invalid ID' });
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: 'Invalid Tour ID' });
     }
     try {
-        const deletedTour = await Tour.findOneAndDelete({ id });
+
+        const deletedTour = await Tour.findById(id);
 
         if (!deletedTour) {
             return res.status(404).json({ message: 'Tour not found' });
         }
+        await Tour.findByIdAndDelete(id);
 
         res.status(200).json({ message: 'Tour deleted successfully' });
     } catch (error) {

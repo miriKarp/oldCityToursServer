@@ -91,19 +91,12 @@ router.post('/addTour', addTour);
 
 /**
  * @swagger
- * /api/tours/updateTour/{id}:
+ * /api/tours/updateTour:
  *   put:
  *     summary: Update an existing tour
  *     tags: [Tours]
  *     security:
  *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: The tour ID
  *     requestBody:
  *       required: true
  *       content:
@@ -111,6 +104,8 @@ router.post('/addTour', addTour);
  *           schema:
  *             type: object
  *             properties:
+ *               _id:
+ *                 type: string
  *               time:
  *                 type: string
  *                 format: date-time
@@ -132,7 +127,7 @@ router.post('/addTour', addTour);
  *       '500':
  *         description: Server error
  */
-router.put('/updateTour/:id', adminOnly, updateTour);
+router.put('/updateTour', adminOnly, updateTour);
 
 /**
  * @swagger
