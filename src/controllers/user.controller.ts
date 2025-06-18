@@ -111,7 +111,8 @@ export const SignIn = async (req: Request, res: Response) => {
             userId: user._id, name: user.name, email: user.email, phone: user.phone
         },
             process.env.JWT_SECRET || 'your_jwt_secret',
-            { expiresIn: '1h' })
+            { expiresIn: '1h' }
+        )
         res.status(200).json({ token, user: { ...user.toObject(), isManager: user.isManager } });
 
     } catch (error) {
