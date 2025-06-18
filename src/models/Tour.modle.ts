@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { ToursTypes } from '../enums/ToursTypes';
+// import { ToursTypes } from '../enums/ToursTypes';
 
 interface ITour extends Document {
     _id: mongoose.Types.ObjectId;
@@ -8,7 +8,7 @@ interface ITour extends Document {
     phone: String,
     note: String,
     group: Boolean,
-    tourType: ToursTypes,
+    tourType: mongoose.Types.ObjectId,
 }
 
 const TourSchema: Schema = new Schema({
@@ -17,7 +17,11 @@ const TourSchema: Schema = new Schema({
     phone: { type: String, },
     note: { type: String, },
     group: { type: Boolean, },
-    tourType: { type: Number, required: true },
+    tourType: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Service',
+        required: true
+    },
 }, { _id: true });
 
 const Tour = mongoose.model<ITour>('Tour', TourSchema);

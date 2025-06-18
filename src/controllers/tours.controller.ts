@@ -15,9 +15,9 @@ export const getTours = async (req: AuthRequest, res: Response) => {
         }
         let tours;
         if (user.isManager) {
-            tours = await Tour.find();
+            tours = await Tour.find().populate('tourType');
         } else {
-            tours = await Tour.find({ _id: { $in: user.toursList } });
+            tours = await Tour.find({ _id: { $in: user.toursList } }).populate('tourType');
         }
 
         res.status(200).json(tours);
@@ -43,9 +43,6 @@ export const addTour = async (req: AuthRequest, res: Response) => {
         if (existingTour) {
             return res.status(400).json({ message: 'Tour already exists in this time' });
         }
-        if (!Object.values(ToursTypes).includes(tourType)) {
-            return res.status(400).json({ message: 'Invalid tourType value' });
-        }
         const lastTour = await Tour.findOne().sort({ id: -1 }).limit(1);
 
         const newTour: ITour = new Tour({ time, invitingName, phone, note, group, tourType });
@@ -68,9 +65,6 @@ export const updateTour = async (req: Request, res: Response) => {
     const { _id, time, invitingName, phone, note, group, tourType } = req.body;
 
     try {
-        if (!Object.values(ToursTypes).includes(tourType)) {
-            return res.status(400).json({ message: 'Invalid tourType value' });
-        }
 
         const updatedTour = await Tour.findOneAndUpdate(
             { _id },
