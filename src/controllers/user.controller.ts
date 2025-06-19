@@ -5,7 +5,6 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import Business from '../models/Business.model';
 import { AuthRequest } from '../middlewares/users.middleware';
-import Tour from '../models/Tour.modle';
 
 dotenv.config();
 
@@ -22,20 +21,19 @@ export const getUsers = async (req: Request, res: Response) => {
     }
 };
 
-
 export const getUserTours = async (req: AuthRequest, res: Response) => {
-  try {
-    const userWithTours = await User.findById(req.user!._id).populate('toursList');
+    try {
+        const userWithTours = await User.findById(req.user!._id).populate('toursList');
 
-    if (!userWithTours || !userWithTours.toursList || userWithTours.toursList.length === 0) {
-      return res.status(200).json([]);
+        if (!userWithTours || !userWithTours.toursList || userWithTours.toursList.length === 0) {
+            return res.status(200).json([]);
+        }
+
+        res.status(200).json(userWithTours.toursList);
+    } catch (error) {
+        console.error('Failed to get user tours', error);
+        res.status(500).json({ message: 'שגיאה בטעינת סיורי המשתמש' });
     }
-
-    res.status(200).json(userWithTours.toursList);
-  } catch (error) {
-    console.error('Failed to get user tours', error);
-    res.status(500).json({ message: 'שגיאה בטעינת סיורי המשתמש' });
-  }
 };
 
 export const SignUp = async (req: Request, res: Response) => {
