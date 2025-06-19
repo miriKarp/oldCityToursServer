@@ -1,28 +1,135 @@
-# Project Name
 
-Short description of your project.
+# 📌 ניהול סיורים בעיר העתיקה – צד שרת (Node.js)
 
-## Installation
+שרת Express עבור מערכת ניהול עסק קטן עם התמחות בסיורים מודרכים בעיר העתיקה. הפרויקט תומך בפעולות CRUD, אימות משתמשים, הרשאות, ניהול שירותים, לקוחות, והזמנות.
 
-Describe how to install and set up your project.
+---
 
-## Usage
+## 🚀 טכנולוגיות
 
-Provide examples and instructions for using your project.
+- Node.js
+- Express.js
+- MongoDB + Mongoose (ORM)
+- JWT לאימות
+- bcrypt להצפנת סיסמאות
+- dotenv לניהול משתני סביבה
+- Swagger לתיעוד API
+- Jest (בדיקות יחידה)
 
-## Configuration
+---
 
-Explain any configuration options or environment variables.
+## 📁 מבנה תיקיות
 
-## Contributing
+```
+server/
+├── config/           # חיבור למסד נתונים
+├── controllers/      # לוגיקת הבקשות
+├── middleware/       # אימות, הרשאות, טיפול בשגיאות
+├── models/           # מודלים של Mongoose
+├── routes/           # קובצי נתיבים לפי REST
+├── .env              # משתני סביבה
+├── .eslintrc.cjs     # הגדרות ESLint
+├── app.js            # הגדרת האפליקציה
+└── server.js         # הפעלת השרת
+```
 
-Guidelines if you want others to contribute to your project.
+---
 
-## License
+## 📦 התקנה והרצה
 
-Specify the license under which your project is distributed.
+1. התקנת חבילות:
+   ```bash
+   npm install
+   ```
 
-## Contact
+2. יצירת קובץ `.env`:
+   ```env
+   PORT=5000
+   MONGO_URI=<your_mongo_connection>
+   JWT_SECRET=<your_jwt_secret>
+   ```
 
-Provide contact information or links to relevant resources.
+3. הפעלת השרת:
+   ```bash
+   npm start
+   ```
 
+---
+
+## 📋 נתיבי API עיקריים
+
+| נתיב                | תיאור הפעולה                       | הרשאות         |
+|---------------------|-------------------------------------|----------------|
+| `POST /signup`      | הרשמת משתמש חדש                   | ציבורי         |
+| `POST /signin`      | התחברות                           | ציבורי         |
+| `GET /business`     | קבלת פרטי עסק                      | מנהל בלבד      |
+| `POST /services`    | הוספת שירות                        | מנהל בלבד      |
+| `POST /Tours`    | קביעת פגישה                       | פתוח ללקוחות   |
+| `PUT /tour/:id` | עדכון פגישה קיימת                 | מנהל בלבד      |
+| `DELETE /tour`  | מחיקת פגישה                        | מנהל בלבד      |
+
+---
+
+## 🔐 אימות והרשאות
+
+- שימוש ב־JWT עבור אימות
+- סיסמאות מאוחסנות ב־bcrypt מוצפן
+- כל הבקשות (מלבד קביעת פגישה) מוגנות באמצעות `authMiddleware`
+- Middleware נפרד ל־Authorization לפי תפקיד (`adminOnly`)
+
+---
+
+## 🧰 תכונות מתקדמות שמומשו
+
+- ✅ שימוש ב־dotenv  
+- ✅ תיעוד עם Swagger  
+- ✅ הרשאות לפי תפקיד (authorization)  
+- ✅ טוקן JWT  
+- ✅ קוד מודולרי (Controllers, Services וכו')  
+- ✅ ניהול סיסמאות מוצפן  
+- ✅ בדיקות יחידה (Jest)  
+- ✅ מניעת פגישות כפולות באותו זמן  
+
+---
+
+## 📄 תיעוד API
+
+ניתן לגשת לתיעוד Swagger דרך:
+
+```
+http://localhost:5000/api-docs
+```
+
+---
+
+## 🧪 בדיקות
+
+- נכתב לפחות קובץ בדיקות אחד
+- כולל לפחות 3 בדיקות עם Jest
+- בדיקות כוללות:
+  - אימות טוקן
+  - יצירת שירות
+  - טיפול בשגיאות
+
+---
+
+## 📝 מידע נוסף
+
+- כל קריאה מוגנת מחזירה `401 Unauthorized` אם אין אימות
+- קיימת בדיקת זמינות לפגישות – לא ניתן להזמין פגישה במועד שכבר תפוס
+- הפרויקט כתוב בקוד מודרני (`async/await`, destructuring, מודולים)
+- Middleware מרכזי לתפיסת שגיאות כלליות
+
+---
+
+## ✉️ יצירת קשר
+
+לשאלות או הצעות:
+📧 excitingtours100@gmail.com
+
+---
+
+## 📌 קרדיט
+
+ממומש במסגרת פרויקט סיום Fullstack – צד שרת  
+Node.js + MongoDB – 2025  
