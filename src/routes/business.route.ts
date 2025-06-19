@@ -1,5 +1,5 @@
 import router from './user.route';
-import { createBusiness, updateDetailsBusiness } from '../controllers/business.controller';
+import { createBusiness, updateBusiness } from '../controllers/business.controller';
 
 /**
  * @swagger
@@ -56,7 +56,7 @@ router.post('/createBusiness', createBusiness)
 
 /**
  * @swagger
- * /api/business/updateDetailsBusiness:
+ * /api/business/updateBusiness:
  *   put:
  *     summary: update details business details
  *     tags: [Business]
@@ -102,6 +102,6 @@ router.post('/createBusiness', createBusiness)
  *       '500':
  *         description: Server error
  */
-router.put('/updateDetailsBusiness', updateDetailsBusiness)
+router.put('/updateBusiness', updateBusiness)
 
 export default router;

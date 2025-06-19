@@ -13,7 +13,7 @@ export const createBusiness = async (req: Request, res: Response) => {
     }
 }
 
-export const updateDetailsBusiness = async (req: Request, res: Response) => {
+export const updateBusiness = async (req: Request, res: Response) => {
 
     const { manager, password, email, phone } = req.body;
     try {

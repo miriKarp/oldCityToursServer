@@ -33,7 +33,7 @@ const router = Router();
  *                   email:
  *                     type: string
  */
-router.get('/', adminOnly, getUsers);
+router.get('/users', adminOnly, getUsers);
 
 /**
  * @swagger
@@ -72,8 +72,6 @@ router.get('/', adminOnly, getUsers);
  *       '500':
  *         description: Internal server error
  */
-router.get('/my-tours', protect, getUserTours);
-
+router.get('/userTours', protect, getUserTours);
 
 export default router;
-

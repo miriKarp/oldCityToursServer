@@ -43,7 +43,7 @@ const router = Router();
  *                   tourType:
  *                     type: number
  */
-router.get('/', protect, getTours);
+router.get('/tours', protect, getTours);
 
 /**
  * @swagger
