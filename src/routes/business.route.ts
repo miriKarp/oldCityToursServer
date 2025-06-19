@@ -132,8 +132,8 @@ router.post('/createBusiness', protect, adminOnly, createBusiness)
  *               openingHours:
  *                 type: string
  *     responses:
- *       '201':
- *         description: Business updated
+ *       '200':
+ *         description: Business updated successfully
  *         content:
  *           application/json:
  *             schema:

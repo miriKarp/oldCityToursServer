@@ -36,16 +36,16 @@ export const updateBusiness = async (req: Request, res: Response) => {
         if (!business) {
             return res.status(404).json({ message: 'Business not found' });
         }
-        if (manager != "string") {
+        if (typeof manager === 'string') {
             business.manager = manager;
         }
-        if (password != "string") {
+        if (typeof password === 'string') {
             business.password = password;
         }
-        if (email != "string") {
+        if (typeof email === 'string') {
             business.email = email;
         }
-        if (phone != "string") {
+        if (typeof phone === 'string') {
             business.phone = phone;
         }
         if (typeof address === 'string') {
