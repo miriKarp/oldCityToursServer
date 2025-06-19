@@ -8,7 +8,7 @@ import User from '../../models/User.modle';
 import Business from '../../models/Business.model';
 import { AuthRequest } from '../../middlewares/users.middleware';
 
-jest.mock('../../models/User.modle'); // מונע קריאה אמיתית לדאטהבייס
+jest.mock('../../models/User.modle');
 jest.mock('../../models/Business.model');
 jest.mock('bcryptjs');
 jest.mock('jsonwebtoken');
@@ -89,8 +89,8 @@ describe('SignUp', () => {
 
     it('should return 400 if manager not found', async () => {
         (User.findOne as jest.Mock)
-            .mockResolvedValueOnce(null) // no existing user
-            .mockResolvedValueOnce(null); // manager not found
+            .mockResolvedValueOnce(null)
+            .mockResolvedValueOnce(null);
 
         await SignUp(req as Request, res as Response);
 
@@ -110,8 +110,8 @@ describe('SignUp', () => {
         };
 
         (User.findOne as jest.Mock)
-            .mockResolvedValueOnce(null) // existing user
-            .mockResolvedValueOnce({ _id: 'manager123' }); // manager found
+            .mockResolvedValueOnce(null)
+            .mockResolvedValueOnce({ _id: 'manager123' });
 
         (bcrypt.hash as jest.Mock).mockResolvedValue('hashedpass');
         (User as any).mockImplementation(() => fakeUser);

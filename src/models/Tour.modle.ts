@@ -1,5 +1,4 @@
 import mongoose, { Schema, Document } from 'mongoose';
-// import { ToursTypes } from '../enums/ToursTypes';
 
 interface ITour extends Document {
     _id: mongoose.Types.ObjectId;
