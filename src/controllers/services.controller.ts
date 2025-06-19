@@ -53,8 +53,6 @@ export const addService = async (req: Request, res: Response) => {
 
 export const updateService = async (req: Request, res: Response) => {
     const { _id, description, price, durationTime } = req.body;
-    console.log('id:', _id, 'description:', description, 'price:', price, 'durationTime:', durationTime);
-    
 
     try {
         const service = await Service.findById(_id);
