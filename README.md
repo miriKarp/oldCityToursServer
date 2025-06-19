@@ -119,6 +119,7 @@ http://localhost:5000/api-docs
 - קיימת בדיקת זמינות לפגישות – לא ניתן להזמין פגישה במועד שכבר תפוס
 - הפרויקט כתוב בקוד מודרני (`async/await`, destructuring, מודולים)
 - Middleware מרכזי לתפיסת שגיאות כלליות
+- מייל להרשמה כמנהל: excitingtours100@gmail.com
 
 ---
 
@@ -126,6 +127,8 @@ http://localhost:5000/api-docs
 
 לשאלות או הצעות:
 📧 excitingtours100@gmail.com
+
+
 
 ---
 
