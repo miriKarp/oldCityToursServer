@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import Tour, { ITour } from '../models/Tour.modle';
-import User from '../models/User.modle';
+import Tour, { ITour } from '../models/Tour.model';
+import User from '../models/User.model';
 import mongoose from 'mongoose';
 import { AuthRequest } from '../middlewares/users.middleware';
 

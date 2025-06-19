@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import User, { IUser } from "../models/User.modle";
+import User, { IUser } from "../models/User.model";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -23,7 +23,10 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const getUserTours = async (req: AuthRequest, res: Response) => {
     try {
-        const userWithTours = await User.findById(req.user!._id).populate('toursList');
+        const userWithTours = await User.findById(req.user!._id).populate({
+            path: 'toursList',
+            populate: { path: 'tourType' }
+        });
 
         if (!userWithTours || !userWithTours.toursList || userWithTours.toursList.length === 0) {
             return res.status(200).json([]);

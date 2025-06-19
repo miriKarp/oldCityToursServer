@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document, Types } from 'mongoose';
-import Tour, { ITour } from './Tour.modle';
+import Tour, { ITour } from './Tour.model';
 
 interface IUser extends Document {
     name: string,

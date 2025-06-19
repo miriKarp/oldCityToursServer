@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { getUsers } from '../user.controller';
 import { SignUp, SignIn, getUserTours } from '../user.controller';
-import User from '../../models/User.modle';
+import User from '../../models/User.model';
 import Business from '../../models/Business.model';
 import { AuthRequest } from '../../middlewares/users.middleware';
 
